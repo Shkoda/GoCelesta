@@ -10,11 +10,12 @@ func hello(w http.ResponseWriter, r *http.Request) {
 }
 
 func bitbucketauth(w http.ResponseWriter, r *http.Request) {
-	resp, err := http.Get("https://bitbucket.org/site/oauth2/authorize?client_id=MuzSM5B3T2aw8ZGSq4&response_type=code")
+	//resp, err := http.Post("https://bitbucket.org/site/oauth2/authorize?client_id=MuzSM5B3T2aw8ZGSq4&response_type=code")
+	resp, err := http.Post("https://bitbucket.org/site/oauth2/access_token", "grant_type=password&username=ohl@ciklum.com&password=ct798wLas9", nil)
 	if (err != nil){
 		io.WriteString(w, "Ooops "+ err.Error())
 	}else {
-		io.WriteString(w, resp.Body.Read())
+		io.WriteString(w, "No errors. Status "+resp.Status)
 	}
 
 	//io.WriteString(w, "Hello world! "+ r.URL.EscapedPath())
