@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/bradrydzewski/go.auth"
 	"net/http"
+
 )
 
 var homepage = `
@@ -31,7 +32,7 @@ var privatepage = `
 </html>
 `
 
-// private webpage, authentication required
+ //private webpage, authentication required
 func Private(w http.ResponseWriter, r *http.Request) {
 	user := r.URL.User.Username()
 	fmt.Fprintf(w, fmt.Sprintf(privatepage, user, user))
@@ -48,10 +49,15 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
+func OnSuccess(w http.ResponseWriter, r *http.Request,  u auth.User, t auth.Token) {
+
+	println("ok! "+ u.Name()+" "+t.Token())
+}
+
 func main() {
 
 	// You should pass in your access key and secret key as args.
-	// Or you can set your access key and secret key by replacing the default values below (2nd input param in flag.String)
+	// Or you can set your access key and secret key by replacing the defauаlt values below (2nd input param in flag.String)
 	consumerKey := flag.String("consumer_key", "MuzSM5B3T2aw8ZGSq4", "your oauth consumer key")
 	secretKey := flag.String("secret_key", "TFURz5wvpPCeKcEk9uzysyPKWBuDusXE", "your oauth secret key")
 	flag.Parse()
@@ -64,9 +70,14 @@ func main() {
 	auth.Config.LoginSuccessRedirect = "/private"
 	auth.Config.CookieSecure = false
 
+
 	// login handler
+	//p := auth.NewBitbucketProvider(*consumerKey, *secretKey, redirect)
 	bitbucketHandler := auth.Bitbucket(*consumerKey, *secretKey, redirect)
+
+	bitbucketHandler.Success = OnSuccess
 	http.Handle("/auth/bitbucket", bitbucketHandler)
+	//http.Handle("/auth/bitbucket", auth.New(p))
 
 	// logout handler
 	http.HandleFunc("/auth/logout", Logout)
