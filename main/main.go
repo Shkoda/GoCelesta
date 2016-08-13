@@ -52,8 +52,8 @@ func main() {
 
 	// You should pass in your access key and secret key as args.
 	// Or you can set your access key and secret key by replacing the default values below (2nd input param in flag.String)
-	consumerKey := flag.String("consumer_key", "[your bitbucket consumer key]", "your oauth consumer key")
-	secretKey := flag.String("secret_key", "[your bitbucket secret key]", "your oauth secret key")
+	consumerKey := flag.String("consumer_key", "MuzSM5B3T2aw8ZGSq4", "your oauth consumer key")
+	secretKey := flag.String("secret_key", "TFURz5wvpPCeKcEk9uzysyPKWBuDusXE", "your oauth secret key")
 	flag.Parse()
 
 	//url that google should re-direct to
